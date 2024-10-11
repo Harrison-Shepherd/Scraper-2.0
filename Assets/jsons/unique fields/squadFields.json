@@ -2,9 +2,7 @@
     "squad_fields": {
       "required_fields": [
         "squadId",
-        "sportId",
-        "fixtureTitle",
-        "fixtureYear"   
+        "sportId"
       ],
       "optional_fields": [
         "opponent",
