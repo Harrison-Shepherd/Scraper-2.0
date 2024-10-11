@@ -16,8 +16,8 @@ def connect():
             host='127.0.0.1',  # Change as needed
             port=3306,          # Change as needed
             user='root',        # Change as needed
-            password='Mugiwara4521',  # Change as needed
-            database='PowerData'  # Change as needed
+            password='powerdata',  # Change as needed
+            database='powerdata'  # Change as needed
         )
         if connection.is_connected():
             log("Successfully connected to the MySQL database 'PowerData'.")

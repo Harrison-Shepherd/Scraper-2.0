@@ -1,9 +1,7 @@
 INSERT INTO squad_info (
   squadId, 
-  squadName, 
-  fixtureTitle, 
-  fixtureYear
+  squadName
 ) 
 VALUES (
-  %s, %s, %s, %s
+  %s, %s
 );

@@ -1,6 +1,12 @@
 import pandas as pd
-import MySQLdb
+import mysql.connector
 from SqlConnector import connect
+import warnings
+
+# Suppress specific UserWarning about pandas and SQLAlchemy
+warnings.filterwarnings("ignore", message=".*pandas only support SQLAlchemy.*")
+
+
 
 def check_null_columns_in_all_tables():
     """
