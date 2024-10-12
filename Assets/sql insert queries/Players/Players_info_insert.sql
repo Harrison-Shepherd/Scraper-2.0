@@ -5,8 +5,9 @@ INSERT INTO player_info (
   displayName,
   shortDisplayName,
   squadId,
+  squadName,
   sportId
 ) 
 VALUES (
-  %s, %s, %s, %s, %s, %s, %s
+  %s, %s, %s, %s, %s, %s, %s, %s
 );

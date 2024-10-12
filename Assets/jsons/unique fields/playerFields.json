@@ -3,7 +3,8 @@
       "required_fields": [
         "squadId",      
         "playerId",
-        "sportId" 
+        "sportId",
+        "squadName"
       ],
       "optional_fields": [
         "surname",

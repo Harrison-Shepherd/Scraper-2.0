@@ -183,7 +183,9 @@ class Scraper:
                             'firstname': row.get('firstname', ''),
                             'displayName': row.get('displayName', ''),
                             'squadId': row['squadId'],
-                            'sportId': sport_info_data['sportId']
+                            'sportId': sport_info_data['sportId'],
+                            'squadName': squad_info_data['squadName']
+
                         }
 
                         try:

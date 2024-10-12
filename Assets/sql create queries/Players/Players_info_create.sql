@@ -6,6 +6,7 @@ CREATE TABLE player_info (
   surname VARCHAR(255) DEFAULT NULL,  
   displayName VARCHAR(255) DEFAULT NULL,
   shortDisplayName VARCHAR(255) DEFAULT NULL,
+  squadName VARCHAR(255) NOT NULL,
   
   -- Squad and Sport Information
   squadId VARCHAR(50) NOT NULL,
