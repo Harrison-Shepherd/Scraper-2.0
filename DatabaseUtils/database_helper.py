@@ -11,11 +11,12 @@ class DatabaseHelper:
             query = f"SHOW COLUMNS FROM {table_name}"
             cursor.execute(query)
             columns = [column[0] for column in cursor.fetchall()]
-            cursor.close()
-            return columns
         except Exception as e:
             logging.error(f"Error fetching columns for table {table_name}: {e}")
             return []
+        finally:
+            cursor.close()  # Ensure cursor is closed even if there's an error
+        return columns
 
     def insert_data_dynamically(self, table_name, data_dict, json_fields):
         """
@@ -47,8 +48,20 @@ class DatabaseHelper:
             seen = set()
             matched_fields = [x for x in matched_fields if not (x in seen or seen.add(x))]
 
-            # Extract the values for the matched fields, ensuring missing fields are set to None
-            values = [data_dict.get(field, None) for field in matched_fields]
+            # Extract the values for the matched fields, ensuring missing fields are handled appropriately
+            values = []
+            for field in matched_fields:
+                value = data_dict.get(field, None)
+                
+                # Handle None or missing values differently based on the expected data type
+                if isinstance(value, (int, float)) or value is None:
+                    # If the value is None or numeric, leave it as None (SQL will treat it as NULL)
+                    value = value if value is not None else None
+                else:
+                    # If the value is a string, use an empty string for missing string fields
+                    value = value if value != '' else ''
+                
+                values.append(value)
 
             # Prepare SQL placeholders and the query
             placeholders = ', '.join(['%s'] * len(matched_fields))
@@ -70,12 +83,18 @@ class DatabaseHelper:
                 # If there are no fields to update, perform a simple insert
                 query = f"INSERT IGNORE INTO {table_name} ({columns_formatted}) VALUES ({placeholders})"
 
+            # Logging the SQL query for debugging purposes (optional, can comment out if not needed)
+            logging.debug(f"Executing query: {query} with values: {values}")
+
             cursor = self.connection.cursor()
             cursor.execute(query, values)
             self.connection.commit()
-            cursor.close()
+
         except Exception as e:
-            logging.error(f"Error inserting data into {table_name}: {e}")
+            logging.error(f"Error inserting data into {table_name}: {e}. Data: {data_dict}")
+            self.connection.rollback()  # Rollback in case of any error
+        finally:
+            cursor.close()  # Ensure cursor is closed even if an error occurs
 
     def get_primary_keys(self, table_name):
         """Retrieve the primary key columns of a table."""
@@ -90,8 +109,9 @@ class DatabaseHelper:
             """
             cursor.execute(query, (table_name,))
             primary_keys = [row[0] for row in cursor.fetchall()]
-            cursor.close()
-            return primary_keys
         except Exception as e:
             logging.error(f"Error fetching primary keys for table {table_name}: {e}")
             return []
+        finally:
+            cursor.close()  # Ensure cursor is closed even if an error occurs
+        return primary_keys

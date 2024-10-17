@@ -7,10 +7,6 @@ from Utils.logger import setup_logging
 from Utils.sanitize_filename import sanitize_filename  
 from Core.League import League
 
-# Set up logging for match processing with ERROR level to only log errors
-setup_logging('match_log.log')
-logging.getLogger().setLevel(logging.ERROR)  # Set the logging level to ERROR
-
 class Match:
     def __init__(self, league_id, match_id, fixture_id, sport_id):
         self.league_id = league_id
@@ -56,7 +52,13 @@ class Match:
             box['fixtureId'] = self.fixture_id
             box['sportId'] = self.sport_id
             box['matchId'] = self.match_id
-    
+
+            # Generate Unique Player ID
+            box['uniquePlayerId'] = box.apply(lambda row: f"{row['playerId']}-{row['squadId']}" if pd.notnull(row['playerId']) and pd.notnull(row['squadId']) else 'Unknown', axis=1)
+
+            # Generate Unique Match ID
+            box['uniqueMatchId'] = box.apply(lambda row: f"{row['matchId']}-{row['playerId']}" if pd.notnull(row['matchId']) and pd.notnull(row['playerId']) else 'Unknown', axis=1)
+            # Remove unwanted columns if necessary
             box = box.drop(columns=['squadNickname', 'squadCode'], errors='ignore')
     
             print(f"Match data inserted for ID:  {self.match_id}")
@@ -65,4 +67,3 @@ class Match:
         else:
             logging.warning(f"Player stats not found or incomplete for match {self.match_id} in league {self.league_id}.")
             print(f"Player stats not found or incomplete for match {self.match_id} in league {self.league_id}. Skipping this match.")
-

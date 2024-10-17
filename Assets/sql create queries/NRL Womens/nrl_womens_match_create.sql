@@ -1,5 +1,4 @@
 CREATE TABLE NRL_womens_match (
-  
   -- Match and Squad Information
   matchId VARCHAR(50) NOT NULL,
   squadId VARCHAR(50) NOT NULL,
@@ -35,7 +34,7 @@ CREATE TABLE NRL_womens_match (
   fieldGoals INT DEFAULT NULL,
   fieldGoalsUnsuccessful INT DEFAULT NULL,
   fieldGoalAttempts INT DEFAULT NULL,
-  
+
   -- Runs and Metres Gained
   runs INT DEFAULT NULL,
   runMetres INT DEFAULT NULL,
@@ -49,7 +48,7 @@ CREATE TABLE NRL_womens_match (
   runsDummyHalf INT DEFAULT NULL,
   runsDummyHalfMetres INT DEFAULT NULL,
   postContactMetres INT DEFAULT NULL,
-  
+
   -- Tackles and Defensive Actions
   tackles INT DEFAULT NULL,
   tackleds INT DEFAULT NULL,
@@ -59,14 +58,14 @@ CREATE TABLE NRL_womens_match (
   lineBreaks INT DEFAULT NULL,
   lineBreakAssists INT DEFAULT NULL,
   offloads INT DEFAULT NULL,
-  
+
   -- Kicking
   kickMetres INT DEFAULT NULL,
   kicksGeneralPlay INT DEFAULT NULL,
   kicksCaught INT DEFAULT NULL,
   bombKicksCaught INT DEFAULT NULL,
   fortyTwenty INT DEFAULT NULL,
-  
+
   -- Errors and Penalties
   handlingErrors INT DEFAULT NULL,
   penaltiesConceded INT DEFAULT NULL,
@@ -79,7 +78,19 @@ CREATE TABLE NRL_womens_match (
   sinBins INT DEFAULT NULL,
   onReports INT DEFAULT NULL,
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES NRL_womens_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES NRL_womens_fixture(uniqueFixtureId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

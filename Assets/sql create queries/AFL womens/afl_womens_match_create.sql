@@ -1,5 +1,4 @@
 CREATE TABLE afl_womens_match (
-  
   -- Match Statistics
   marksInside50 INT DEFAULT NULL,
   handballs INT DEFAULT NULL,
@@ -58,7 +57,19 @@ CREATE TABLE afl_womens_match (
   sportId VARCHAR(50) NOT NULL,
   matchId VARCHAR(50) NOT NULL,
 
-  -- Keys
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES afl_womens_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES afl_womens_fixture(uniqueFixtureId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

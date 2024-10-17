@@ -1,5 +1,4 @@
 CREATE TABLE netball_womens_nz_period (
-  
   -- Match Statistics
   rebounds INT DEFAULT NULL,
   turnoverHeld INT DEFAULT NULL,
@@ -27,8 +26,8 @@ CREATE TABLE netball_womens_nz_period (
   -- Player Information
   playerId VARCHAR(50) NOT NULL,
   squadId VARCHAR(50) NOT NULL,
-  startingPositionCode VARCHAR(45) NOT NULL,
-  currentPositionCode VARCHAR(45) NOT NULL,
+  startingPositionCode VARCHAR(45) DEFAULT NULL,
+  currentPositionCode VARCHAR(45) DEFAULT NULL,
   
   -- Performance Statistics
   goals INT DEFAULT NULL,
@@ -54,10 +53,17 @@ CREATE TABLE netball_womens_nz_period (
 
   -- Match Information
   matchId VARCHAR(50) NOT NULL,  -- Reference to the match
-  periodId VARCHAR(45) NOT NULL,  -- Using the matchId_period format
- 
+  periodId VARCHAR(45) NOT NULL,  -- Precomputed in the application code
 
-  -- Keys
-  PRIMARY KEY (periodId, playerId),  -- Composite primary key for uniqueness
-  FOREIGN KEY (matchId) REFERENCES netball_womens_nz_match(matchId)  -- Foreign key linking to match table
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES netball_womens_nz_match(uniqueMatchId),  -- Foreign key linking to match table
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

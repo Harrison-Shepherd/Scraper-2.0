@@ -3,6 +3,7 @@ import os
 import mysql.connector
 from mysql.connector import Error
 from flask import Flask, render_template_string, request
+import subprocess  # Used to call external Python scripts
 
 app = Flask(__name__)
 
@@ -16,8 +17,8 @@ def connect():
             host='127.0.0.1',  # Change as needed
             port=3306,          # Change as needed
             user='root',        # Change as needed
-            password='powerdata',  # Change as needed
-            database='powerdata'  # Change as needed
+            password='Mugiwara4521',  # Change as needed
+            database='PowerData'  # Change as needed
         )
         if connection.is_connected():
             log("Successfully connected to the MySQL database 'PowerData'.")
@@ -81,6 +82,28 @@ def create_tables():
     except Exception as e:
         log(f"Error in create_tables: {e}")
 
+# New function to scrape the entire database
+def scrape_entire_database():
+    try:
+        # Run the external Scraper.py script
+        result = subprocess.run(['python', 'Scraper.py'], capture_output=True, text=True)
+        log(f"Scrape output: {result.stdout}")
+        if result.stderr:
+            log(f"Scrape error: {result.stderr}")
+    except Exception as e:
+        log(f"Error during scraping: {e}")
+
+# New function to drop all tables
+def drop_all_tables():
+    try:
+        # Run the external CleanDatabase.py script
+        result = subprocess.run(['python', 'DatabaseUtils/CleanDatabase.py'], capture_output=True, text=True)
+        log(f"Drop tables output: {result.stdout}")
+        if result.stderr:
+            log(f"Drop tables error: {result.stderr}")
+    except Exception as e:
+        log(f"Error during table drop: {e}")
+
 @app.route('/')
 def home():
     return render_template_string(template(), logs=log_messages)
@@ -117,6 +140,18 @@ def delete_database():
             connection.close()
     return render_template_string(template(), logs=log_messages)
 
+# New route to call the scrape function
+@app.route('/scrape_database', methods=['POST'])
+def scrape_database():
+    scrape_entire_database()
+    return render_template_string(template(), logs=log_messages)
+
+# New route to call the drop tables function
+@app.route('/drop_tables', methods=['POST'])
+def drop_tables():
+    drop_all_tables()
+    return render_template_string(template(), logs=log_messages)
+
 def template():
     """HTML template with CSS for styling."""
     return """
@@ -128,13 +163,13 @@ def template():
         <title>Database Manager</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Arial', 'Helvetica', sans-serif; /* Close alternative to Aptos */
                 background-color: #f4f4f4;
                 color: #333;
                 padding: 20px;
             }
             h1 {
-                color: #0056b3;
+                color: black; /* Keep the Database Manager heading in black */
             }
             form {
                 margin-bottom: 20px;
@@ -143,16 +178,18 @@ def template():
                 padding: 10px;
                 width: 200px;
                 margin-right: 10px;
+                font-family: 'Arial', 'Helvetica', sans-serif; /* Matching form text with body */
             }
             input[type="submit"] {
                 padding: 10px 20px;
-                background-color: #28a745;
+                background-color: #C00000; /* Updated button color */
                 color: white;
                 border: none;
                 cursor: pointer;
+                font-family: 'Arial', 'Helvetica', sans-serif; /* Matching button text with body */
             }
             input[type="submit"]:hover {
-                background-color: #218838;
+                background-color: #A00000; /* Slightly darker red on hover */
             }
             .logs {
                 margin-top: 20px;
@@ -164,7 +201,7 @@ def template():
             .log-message {
                 margin: 5px 0;
                 padding: 5px;
-                border-left: 5px solid #007bff;
+                border-left: 5px solid #C00000; /* Updated log message border to match button color */
             }
         </style>
     </head>
@@ -178,6 +215,12 @@ def template():
             <input type="text" name="db_name" placeholder="Enter Database Name" required>
             <input type="submit" value="Delete Database">
         </form>
+        <form method="POST" action="/scrape_database">
+            <input type="submit" value="Scrape Entire Database">
+        </form>
+        <form method="POST" action="/drop_tables">
+            <input type="submit" value="Drop All Tables">
+        </form>
         <div class="logs">
             <h2>Log Messages:</h2>
             {% for log in logs %}
@@ -187,6 +230,8 @@ def template():
     </body>
     </html>
     """
+
+
 
 if __name__ == '__main__':
     create_tables()  # Call this before starting the Flask app

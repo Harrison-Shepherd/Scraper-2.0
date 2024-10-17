@@ -1,5 +1,4 @@
 CREATE TABLE afl_mens_match (
-  
   -- Match Information
   sportId VARCHAR(50) NOT NULL,
   clearances INT DEFAULT NULL,
@@ -46,7 +45,19 @@ CREATE TABLE afl_mens_match (
   homeId VARCHAR(50) NOT NULL,
   kicksEffective INT DEFAULT NULL,
 
-  -- Keys
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES afl_mens_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES afl_mens_fixture(uniqueFixtureId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

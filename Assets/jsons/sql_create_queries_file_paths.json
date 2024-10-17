@@ -1,5 +1,14 @@
 {
-    "AFL Mens": {
+  "Squads": {
+    "info": "Assets/sql create queries/Squads/Squad_info_create.sql"    
+  },
+  "Sports": {
+    "info": "Assets/sql create queries/Sports/Sport_info_create.sql"    
+  },
+  "Players": {
+    "info": "Assets/sql create queries/Players/Players_info_create.sql"    
+  },  
+  "AFL Mens": {
       "fixtures": "Assets/sql create queries/AFL Mens/afl_mens_fixture_create.sql",
       "match_details": "Assets/sql create queries/AFL Mens/afl_mens_match_create.sql",
       "score_flow": "Assets/sql create queries/AFL Mens/afl_mens_score_flow_create.sql",
@@ -58,16 +67,8 @@
       "match_details": "Assets/sql create queries/NRL Womens/nrl_womens_match_create.sql",
       "score_flow": "Assets/sql create queries/NRL Womens/nrl_womens_score_flow_create.sql",
       "period_stats": "Assets/sql create queries/NRL Womens/nrl_womens_period_create.sql"
-    },
-    "Squads": {
-      "info": "Assets/sql create queries/Squads/Squad_info_create.sql"    
-    },
-    "Sports": {
-      "info": "Assets/sql create queries/Sports/Sport_info_create.sql"    
-    },
-    "Players": {
-      "info": "Assets/sql create queries/Players/Players_info_create.sql"    
     }
+
 
 
   }

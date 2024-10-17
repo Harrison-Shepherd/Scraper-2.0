@@ -1,10 +1,11 @@
 INSERT INTO sport_info (
   sportId, 
+  sportName, 
   fixtureId, 
   fixtureTitle, 
   fixtureYear, 
-  sportName
+  uniqueSportId
 ) 
 VALUES (
-  %s, %s, %s, %s, %s
+  %s, %s, %s, %s, %s, %s
 );

@@ -1,5 +1,4 @@
 CREATE TABLE netball_womens_international_match (
-  
   -- Match Statistics
   rebounds INT DEFAULT NULL,
   penalties INT DEFAULT NULL,
@@ -40,7 +39,6 @@ CREATE TABLE netball_womens_international_match (
   pickups INT DEFAULT NULL,
   intercepts INT DEFAULT NULL,
 
- 
   goal1 INT DEFAULT NULL,  
   goal2 INT DEFAULT NULL,  
   attempt1 INT DEFAULT NULL,  
@@ -80,7 +78,19 @@ CREATE TABLE netball_womens_international_match (
   unforcedTurnovers INT DEFAULT NULL,
   gainToGoalPerc INT DEFAULT NULL,
 
-  -- Keys
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES netball_womens_international_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES netball_womens_international_fixture(uniqueFixtureId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

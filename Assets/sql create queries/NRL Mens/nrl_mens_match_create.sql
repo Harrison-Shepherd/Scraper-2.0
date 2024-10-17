@@ -1,5 +1,4 @@
 CREATE TABLE NRL_mens_match (
-  
   -- Match and Squad Information
   matchId VARCHAR(50) NOT NULL,
   squadId VARCHAR(50) NOT NULL,
@@ -79,7 +78,21 @@ CREATE TABLE NRL_mens_match (
   sinBins INT DEFAULT NULL,
   onReports INT DEFAULT NULL,
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES NRL_mens_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES NRL_mens_fixture(uniqueFixtureId),
+  
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

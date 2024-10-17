@@ -1,13 +1,15 @@
 INSERT INTO player_info (
-  playerId,
-  firstname,
-  surname,
-  displayName,
-  shortDisplayName,
-  squadId,
-  squadName,
-  sportId
+  playerId, 
+  firstname, 
+  surname, 
+  displayName, 
+  shortDisplayName, 
+  squadName, 
+  squadId, 
+  sportId, 
+  uniqueSquadId, 
+  uniquePlayerId
 ) 
 VALUES (
-  %s, %s, %s, %s, %s, %s, %s, %s
+  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
 );

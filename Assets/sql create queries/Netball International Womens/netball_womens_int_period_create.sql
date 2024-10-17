@@ -1,5 +1,4 @@
 CREATE TABLE netball_womens_international_period (
-  
   -- Match Statistics
   rebounds INT DEFAULT NULL,
   turnoverHeld INT DEFAULT NULL,
@@ -51,11 +50,19 @@ CREATE TABLE netball_womens_international_period (
 
   -- Match Information
   matchId VARCHAR(50) NOT NULL,  -- Reference to the match
-  periodId VARCHAR(45) NOT NULL,  -- Using the matchId_period format
+  periodId VARCHAR(45) NOT NULL,  -- Precomputed in the application code
 
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
 
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
 
-  -- Keys
-  PRIMARY KEY (periodId, playerId),  -- Composite primary key for uniqueness
-  FOREIGN KEY (matchId) REFERENCES netball_womens_international_match(matchId)  -- Foreign key linking to match table
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES netball_womens_international_match(uniqueMatchId),  -- Foreign key linking to match table
+  
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

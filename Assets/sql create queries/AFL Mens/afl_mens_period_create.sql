@@ -1,5 +1,4 @@
 CREATE TABLE afl_mens_period (
-  
   -- Match Statistics
   marksInside50 INT DEFAULT NULL,
   handballs INT DEFAULT NULL,
@@ -20,7 +19,7 @@ CREATE TABLE afl_mens_period (
   disposalEfficiency INT DEFAULT NULL,
   period INT DEFAULT NULL,
   blocks INT DEFAULT NULL,
-  squadId INT NOT NULL,
+  squadId VARCHAR(50) NOT NULL,
   marks INT DEFAULT NULL,
   hitouts INT DEFAULT NULL,
   kicks INT DEFAULT NULL,
@@ -30,14 +29,20 @@ CREATE TABLE afl_mens_period (
   clearances INT DEFAULT NULL,
   kicksIneffective INT DEFAULT NULL,
   possessionsUncontested INT DEFAULT NULL,
-  
 
-  
   -- Match Information
-  matchId VARCHAR(50) NOT NULL,  -- Reference to the match
-  periodId VARCHAR(45) NOT NULL,  -- Using the matchId_period format
-  
-  -- Keys
-  PRIMARY KEY (periodId, playerId),  -- Composite primary key for uniqueness
-  FOREIGN KEY (matchId) REFERENCES afl_mens_match(matchId)  -- Foreign key linking to match table
+  matchId VARCHAR(50) NOT NULL,
+  periodId VARCHAR(45) NOT NULL,  -- Precomputed from matchId and period
+
+  -- Precomputed Columns
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES afl_mens_match(uniqueMatchId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

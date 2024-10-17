@@ -1,5 +1,4 @@
 CREATE TABLE afl_womens_period (
-  
   -- Match Statistics
   marksInside50 INT DEFAULT NULL,
   handballs INT DEFAULT NULL,
@@ -33,13 +32,19 @@ CREATE TABLE afl_womens_period (
   kicksIneffective INT DEFAULT NULL,
   possessionsUncontested INT DEFAULT NULL,
 
-
-
   -- Match Information
-  matchId VARCHAR(50) NOT NULL,  -- Reference to the match
+  matchId VARCHAR(50) NOT NULL,  
   periodId VARCHAR(50) NOT NULL,
 
-  -- Keys
-  PRIMARY KEY (periodId, playerId),  -- Composite primary key for uniqueness
-  FOREIGN KEY (matchId) REFERENCES afl_womens_match(matchId)  -- Foreign key linking to match table
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES afl_womens_match(uniqueMatchId),  
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

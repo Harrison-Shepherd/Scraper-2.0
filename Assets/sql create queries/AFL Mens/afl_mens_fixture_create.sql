@@ -1,5 +1,4 @@
 CREATE TABLE afl_mens_fixture (
-  
   -- Fixture Information
   fixtureId VARCHAR(50) NOT NULL,
   matchId VARCHAR(50) NOT NULL,
@@ -16,7 +15,7 @@ CREATE TABLE afl_mens_fixture (
   utcStartTime VARCHAR(45) DEFAULT NULL,
 
   -- Home Squad Information
-  homeSquadId INT NOT NULL,
+  homeSquadId VARCHAR(50) NOT NULL,
   homeSquadName VARCHAR(45) DEFAULT NULL,
   homeSquadShortCode VARCHAR(45) DEFAULT NULL,
   homeSquadNickname VARCHAR(45) DEFAULT NULL,
@@ -24,7 +23,7 @@ CREATE TABLE afl_mens_fixture (
   homeSquadCode VARCHAR(45) DEFAULT NULL,
 
   -- Away Squad Information
-  awaySquadId INT NOT NULL,
+  awaySquadId VARCHAR(50) NOT NULL,
   awaySquadName VARCHAR(45) DEFAULT NULL,
   awaySquadNickname VARCHAR(45) DEFAULT NULL,
   awaySquadScore INT DEFAULT NULL,
@@ -32,7 +31,7 @@ CREATE TABLE afl_mens_fixture (
   awaySquadShortCode VARCHAR(45) DEFAULT NULL,
 
   -- Venue Information
-  venueId INT NOT NULL,
+  venueId VARCHAR(50) NOT NULL,
   venueCode VARCHAR(45) DEFAULT NULL,
   venueName VARCHAR(45) DEFAULT NULL,
 
@@ -41,6 +40,18 @@ CREATE TABLE afl_mens_fixture (
   finalCode VARCHAR(45) DEFAULT NULL,
   finalShortCode VARCHAR(45) DEFAULT NULL,
 
+  -- Precomputed Columns (calculated in the application layer)
+  matchName VARCHAR(255) NOT NULL,
+  uniqueAwaySquadId VARCHAR(255) NOT NULL,
+  uniqueHomeSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+
   -- Primary Key
-  PRIMARY KEY (fixtureId, matchId)
+  PRIMARY KEY (uniqueFixtureId),
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniqueHomeSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueAwaySquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

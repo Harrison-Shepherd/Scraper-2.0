@@ -1,0 +1,44 @@
+[
+    {
+        "squadId": "808",
+        "squadName": "Southern Steel",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "803",
+        "squadName": "Central Pulse",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "808",
+        "squadName": "Southern Steel",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "803",
+        "squadName": "Central Pulse",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "808",
+        "squadName": "Southern Steel",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "803",
+        "squadName": "Central Pulse",
+        "fixtureTitle": "ANZ Championship (2009)"
+    },
+    {
+        "squadId": "808",
+        "sportId": null,
+        "opponent": null,
+        "squadName": "Southern Steel"
+    },
+    {
+        "squadId": "803",
+        "sportId": null,
+        "opponent": null,
+        "squadName": "Central Pulse"
+    }
+]

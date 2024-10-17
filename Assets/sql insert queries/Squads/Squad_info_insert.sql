@@ -1,7 +1,8 @@
 INSERT INTO squad_info (
   squadId, 
-  squadName
+  squadName,
+  uniqueSquadId
 ) 
 VALUES (
-  %s, %s
+  %s, %s, %s
 );

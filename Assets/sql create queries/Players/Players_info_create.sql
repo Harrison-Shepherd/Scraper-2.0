@@ -1,5 +1,4 @@
 CREATE TABLE player_info (
-  
   -- Player Information
   playerId VARCHAR(50) NOT NULL,
   firstname VARCHAR(255) DEFAULT NULL,
@@ -12,9 +11,13 @@ CREATE TABLE player_info (
   squadId VARCHAR(50) NOT NULL,
   sportId VARCHAR(50) DEFAULT NULL,  
 
+  -- Precomputed uniqueSquadId and uniquePlayerId
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  
   -- Primary Key
-  PRIMARY KEY (playerId, squadId),
+  PRIMARY KEY (uniquePlayerId),
 
   -- Foreign Key for squadId
-  FOREIGN KEY (squadId) REFERENCES squad_info(squadId)
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId)
 );

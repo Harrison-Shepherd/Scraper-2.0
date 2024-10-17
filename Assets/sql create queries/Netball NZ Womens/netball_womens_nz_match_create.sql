@@ -1,5 +1,4 @@
 CREATE TABLE netball_womens_nz_match (
-  
   -- Match Statistics
   rebounds INT DEFAULT NULL,
   turnoverHeld INT DEFAULT NULL,
@@ -61,11 +60,23 @@ CREATE TABLE netball_womens_nz_match (
   awayId VARCHAR(50) NOT NULL,
   opponent VARCHAR(45) NOT NULL,
   round INT NOT NULL,
-  fixtureId VARCHAR(50) NOT NULL,  -- Referencing from fixture table
+  fixtureId VARCHAR(50) NOT NULL,
   sportId VARCHAR(50) NOT NULL,
-  matchId VARCHAR(50) NOT NULL,  -- Referencing from fixture table
+  matchId VARCHAR(50) NOT NULL,
   
-  -- Keys
-  PRIMARY KEY (matchId, playerId),
-  FOREIGN KEY (fixtureId, matchId) REFERENCES netball_womens_nz_fixture(fixtureId, matchId)  -- Composite foreign key
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueSquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+
+  -- Composite Primary Key
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  PRIMARY KEY (uniqueMatchId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueFixtureId) REFERENCES netball_womens_nz_fixture(uniqueFixtureId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId),
+  FOREIGN KEY (uniqueSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

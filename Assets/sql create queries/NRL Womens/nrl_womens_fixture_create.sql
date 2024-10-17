@@ -1,5 +1,4 @@
 CREATE TABLE NRL_womens_fixture (
-  
   -- Fixture Information
   fixtureId VARCHAR(50) NOT NULL,
   matchId VARCHAR(50) NOT NULL,
@@ -41,6 +40,17 @@ CREATE TABLE NRL_womens_fixture (
   finalCode VARCHAR(45) DEFAULT NULL,
   finalShortCode VARCHAR(45) DEFAULT NULL,
 
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueHomeSquadId VARCHAR(255) NOT NULL,
+  uniqueAwaySquadId VARCHAR(255) NOT NULL,
+  uniqueSportId VARCHAR(255) NOT NULL,
+  uniqueFixtureId VARCHAR(255) NOT NULL,
+
   -- Primary Key
-  PRIMARY KEY (fixtureId, matchId)
+  PRIMARY KEY (uniqueFixtureId),
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniqueHomeSquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueAwaySquadId) REFERENCES squad_info(uniqueSquadId),
+  FOREIGN KEY (uniqueSportId) REFERENCES sport_info(uniqueSportId)
 );

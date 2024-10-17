@@ -17,8 +17,18 @@ CREATE TABLE NRL_womens_score_flow (
 
   -- Unique Identifier
   scoreFlowId VARCHAR(45) NOT NULL,  -- Updated to VARCHAR to handle the matchId + index format
+  
+  -- Precomputed Columns (calculated in the application layer)
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
 
-  -- Primary Key and Foreign Key
+  -- Primary Key
   PRIMARY KEY (scoreFlowId),  -- Use scoreFlowId as the primary key
-  FOREIGN KEY (matchId) REFERENCES NRL_womens_match(matchId)  -- Foreign key linking to match table
+
+  -- Foreign Key
+  FOREIGN KEY (uniqueMatchId) REFERENCES NRL_womens_match(uniqueMatchId),  -- Foreign key linking to match table
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
+
 );

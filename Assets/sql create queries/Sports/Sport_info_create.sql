@@ -1,5 +1,4 @@
 CREATE TABLE sport_info (
-  
   -- Sport Information
   sportId VARCHAR(50) NOT NULL,
   sportName VARCHAR(255) DEFAULT NULL,
@@ -9,6 +8,9 @@ CREATE TABLE sport_info (
   fixtureTitle VARCHAR(255) DEFAULT NULL,
   fixtureYear VARCHAR(50) DEFAULT NULL,
   
+  -- Explicitly set uniqueSportId
+  uniqueSportId VARCHAR(255) NOT NULL,
+
   -- Primary Key
-  PRIMARY KEY (sportId, fixtureId)
+  PRIMARY KEY (uniqueSportId)
 );

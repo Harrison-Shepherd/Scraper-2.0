@@ -1,16 +1,13 @@
 CREATE TABLE NRL_mens_period (
-  
   -- Match and Squad Information
   matchId VARCHAR(50) NOT NULL,  -- Reference to the match
   squadId VARCHAR(50) NOT NULL,
   periodId VARCHAR(45) NOT NULL,  
 
-
   -- Player Information
   playerId VARCHAR(50) NOT NULL,
   jumperNumber INT DEFAULT NULL,
   position VARCHAR(45) DEFAULT NULL,
-
 
   -- Performance Statistics
   tries INT DEFAULT NULL,
@@ -23,7 +20,7 @@ CREATE TABLE NRL_mens_period (
   penaltyGoalAttempts INT DEFAULT NULL,
   fieldGoals INT DEFAULT NULL,
   fieldGoalAttempts INT DEFAULT NULL,
-  
+
   -- Runs and Metres Gained
   runs INT DEFAULT NULL,
   runMetres INT DEFAULT NULL,
@@ -37,7 +34,7 @@ CREATE TABLE NRL_mens_period (
   runsDummyHalf INT DEFAULT NULL,
   runsDummyHalfMetres INT DEFAULT NULL,
   postContactMetres INT DEFAULT NULL,
-  
+
   -- Tackles and Defensive Actions
   tackles INT DEFAULT NULL,
   tackleds INT DEFAULT NULL,
@@ -50,7 +47,7 @@ CREATE TABLE NRL_mens_period (
   ineffectiveTackles INT DEFAULT NULL,  -- Period-specific
   tacklesMissed INT DEFAULT NULL,  -- Period-specific
   incompleteSets INT DEFAULT NULL,  -- Period-specific
-  
+
   -- Kicking
   kickMetres INT DEFAULT NULL,
   kicksGeneralPlay INT DEFAULT NULL,
@@ -72,7 +69,17 @@ CREATE TABLE NRL_mens_period (
   scrumWins INT DEFAULT NULL,  -- Period-specific
   score INT DEFAULT NULL,  -- Period-specific
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (periodId, playerId),  -- Composite primary key for uniqueness
-  FOREIGN KEY (matchId) REFERENCES NRL_mens_match(matchId)  -- Foreign key linking to match table
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES NRL_mens_match(uniqueMatchId),
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

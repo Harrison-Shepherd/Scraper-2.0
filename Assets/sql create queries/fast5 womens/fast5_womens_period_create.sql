@@ -7,8 +7,6 @@ CREATE TABLE fast5_womens_period (
   currentPositionCode VARCHAR(5) DEFAULT NULL,
   startingPositionCode VARCHAR(5) DEFAULT NULL,
 
-
-
   -- Match Information
   quartersPlayed INT DEFAULT NULL,
   minutesPlayed INT DEFAULT NULL,
@@ -70,7 +68,15 @@ CREATE TABLE fast5_womens_period (
   -- Miscellaneous
   tossUpWin INT DEFAULT NULL,
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (periodId, playerId),
-  FOREIGN KEY (matchId) REFERENCES fast5_womens_match(matchId)
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES fast5_womens_match(uniqueMatchId),
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

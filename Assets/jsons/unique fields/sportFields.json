@@ -1,14 +1,14 @@
 {
-    "sport_fields": {
-      "required_fields": [
-        "sportId",
-        "fixtureId",
-        "fixtureTitle",
-        "fixtureYear"    
-      ],
-      "optional_fields": [
-        "sportName"
-      ]
-    }
+  "sport_fields": {
+    "required_fields": [
+      "sportId",
+      "fixtureId",
+      "fixtureTitle",
+      "fixtureYear",
+      "uniqueSportId"
+    ],
+    "optional_fields": [
+      "sportName"
+    ]
   }
-  
+}

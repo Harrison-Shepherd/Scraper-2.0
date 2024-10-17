@@ -1,5 +1,4 @@
 CREATE TABLE netball_womens_australia_score_flow (
-  
   -- Period and Timing Information
   period INT DEFAULT NULL,
   periodSeconds INT DEFAULT NULL,
@@ -18,9 +17,18 @@ CREATE TABLE netball_womens_australia_score_flow (
   matchId VARCHAR(50) NOT NULL,
 
   -- Unique Identifier
-  scoreFlowId VARCHAR(45) NOT NULL,  -- Updated to VARCHAR to handle the matchId + index format
+  scoreFlowId VARCHAR(45) NOT NULL,  -- Precomputed from matchId and an index (or other unique logic)
 
-  -- Primary Key and Foreign Key
+  -- Precomputed Columns (calculated in the application layer)
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
   PRIMARY KEY (scoreFlowId),  -- Use scoreFlowId as the primary key
-  FOREIGN KEY (matchId) REFERENCES netball_womens_australia_match(matchId)  -- Foreign key linking to match table
+
+  -- Foreign Key
+  FOREIGN KEY (uniqueMatchId) REFERENCES netball_womens_australia_match(uniqueMatchId),  -- Foreign key linking to match table
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

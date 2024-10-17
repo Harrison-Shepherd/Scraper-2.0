@@ -23,8 +23,8 @@ class Fixture:
         league_name_and_season = League.get_league_name_and_season(self.league_id)
         
         url = f'http://mc.championdata.com/data/{self.league_id}/fixture.json?/'
+
         response = requests.get(url)
-        
         if response.status_code != 200:
             print(f"Failed to retrieve fixture data for league {self.league_id}: {response.status_code}")
             return
@@ -38,8 +38,9 @@ class Fixture:
             
             if matches:
                 matches_df = pd.DataFrame(matches)
-                matches_df = matches_df[~matches_df['matchStatus'].isin(['incomplete', 'scheduled'])]
+                matches_df = matches_df[~matches_df['matchStatus'].isin(['incomplete', 'scheduled'])]  # Remove incomplete and scheduled matches
     
+                # Determine sport category and ID
                 sport_category, sport_id = determine_sport_category(
                     self.regulation_periods, 
                     matches_df['homeSquadId'].tolist(), 
@@ -49,6 +50,7 @@ class Fixture:
                 
                 sanitized_league_name = sanitize_filename(league_name_and_season)
                 
+                # Map the sport category to a sport ID (if available)
                 sport_id_map = {
                     'AFL Mens': 1, 'AFL Womens': 2, 'NRL Mens': 3, 'NRL Womens': 4,
                     'FAST5 Mens': 5, 'FAST5 Womens': 6, 'International & NZ Netball Mens': 7,
@@ -58,7 +60,20 @@ class Fixture:
                 sport_id = sport_id_map.get(sport_category, None)
                 matches_df['sportId'] = sport_id
                 matches_df['fixtureId'] = self.fixture_id
-                
+
+                # Generate uniqueFixtureId (composite of fixtureId and matchId)
+                matches_df['uniqueFixtureId'] = matches_df.apply(
+                    lambda row: f"{self.fixture_id}-{row['matchId']}" if pd.notnull(row['matchId']) else 'Unknown', axis=1
+                )
+
+                # Generate unique squad IDs for home and away squads
+                matches_df['uniqueHomeSquadId'] = matches_df.apply(
+                    lambda row: f"{row['homeSquadId']}-{row['homeSquadName']}" if pd.notnull(row['homeSquadId']) and pd.notnull(row['homeSquadName']) else 'Unknown', axis=1
+                )
+                matches_df['uniqueAwaySquadId'] = matches_df.apply(
+                    lambda row: f"{row['awaySquadId']}-{row['awaySquadName']}" if pd.notnull(row['awaySquadId']) and pd.notnull(row['awaySquadName']) else 'Unknown', axis=1
+                )
+
                 self.data = matches_df
             else:
                 print(f"No match data found for league {self.league_id}.")

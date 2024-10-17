@@ -1,5 +1,4 @@
 CREATE TABLE NRL_womens_period (
-  
   -- Match and Squad Information
   matchId VARCHAR(50) NOT NULL,  
   squadId VARCHAR(50) NOT NULL,
@@ -9,7 +8,6 @@ CREATE TABLE NRL_womens_period (
   playerId VARCHAR(50) NOT NULL,
   jumperNumber INT DEFAULT NULL,
   position VARCHAR(45) DEFAULT NULL,
-
 
   -- Performance Statistics
   tries INT DEFAULT NULL,
@@ -22,7 +20,7 @@ CREATE TABLE NRL_womens_period (
   penaltyGoalAttempts INT DEFAULT NULL,
   fieldGoals INT DEFAULT NULL,
   fieldGoalAttempts INT DEFAULT NULL,
-  
+
   -- Runs and Metres Gained
   runs INT DEFAULT NULL,
   runMetres INT DEFAULT NULL,
@@ -36,7 +34,7 @@ CREATE TABLE NRL_womens_period (
   runsDummyHalf INT DEFAULT NULL,
   runsDummyHalfMetres INT DEFAULT NULL,
   postContactMetres INT DEFAULT NULL,
-  
+
   -- Tackles and Defensive Actions
   tackles INT DEFAULT NULL,
   tackleds INT DEFAULT NULL,
@@ -46,14 +44,14 @@ CREATE TABLE NRL_womens_period (
   lineBreaks INT DEFAULT NULL,
   lineBreakAssists INT DEFAULT NULL,
   offloads INT DEFAULT NULL,
-  
+
   -- Kicking
   kickMetres INT DEFAULT NULL,
   kicksGeneralPlay INT DEFAULT NULL,
   kicksCaught INT DEFAULT NULL,
   bombKicksCaught INT DEFAULT NULL,
   fortyTwenty INT DEFAULT NULL,
-  
+
   -- Errors and Penalties
   handlingErrors INT DEFAULT NULL,
   penaltiesConceded INT DEFAULT NULL,
@@ -73,7 +71,15 @@ CREATE TABLE NRL_womens_period (
   scrumWins INT DEFAULT NULL,  
   score INT DEFAULT NULL,  
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (periodId, playerId),  
-  FOREIGN KEY (matchId) REFERENCES NRL_womens_match(matchId)  
+  -- Precomputed Columns (calculated in the application layer)
+  uniqueMatchId VARCHAR(255) NOT NULL,
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniquePeriodId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (uniquePeriodId),
+
+  -- Foreign Keys
+  FOREIGN KEY (uniqueMatchId) REFERENCES NRL_womens_match(uniqueMatchId),  -- Foreign key linking to match table
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );

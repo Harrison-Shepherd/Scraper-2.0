@@ -1,13 +1,13 @@
 {
-    "squad_fields": {
-      "required_fields": [
-        "squadId",
-        "sportId"
-      ],
-      "optional_fields": [
-        "opponent",
-        "squadName"
-      ]
-    }
+  "squad_fields": {
+    "required_fields": [
+      "squadId",
+      "sportId",
+      "uniqueSquadId"
+    ],
+    "optional_fields": [
+      "opponent",
+      "squadName"
+    ]
   }
-  
+}

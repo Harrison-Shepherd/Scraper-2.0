@@ -28,7 +28,10 @@ class PeriodData:
             player_period_stats = json_data['matchStats']['playerPeriodStats']['player']
             df = pd.json_normalize(player_period_stats)
 
-
+            # Ensure periodId and playerId exist, and generate uniquePeriodId
+            df['uniquePeriodId'] = df.apply(
+                lambda row: f"{row['periodId']}-{row['playerId']}" if pd.notnull(row.get('periodId')) and pd.notnull(row.get('playerId')) else 'Unknown', axis=1
+            )
 
             self.data = df
         else:

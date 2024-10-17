@@ -1,5 +1,4 @@
 CREATE TABLE fast5_mens_score_flow (
-  
   -- Period and Timing Information
   period INT DEFAULT NULL,
   periodSeconds INT DEFAULT NULL,
@@ -18,9 +17,18 @@ CREATE TABLE fast5_mens_score_flow (
   matchId VARCHAR(50) NOT NULL,
 
   -- Unique Identifier
-  scoreFlowId VARCHAR(45) NOT NULL,  -- Updated to VARCHAR to handle the matchId + index format
+  scoreFlowId VARCHAR(45) NOT NULL,  -- Precomputed from matchId and index (or other unique logic)
 
-  -- Primary Key and Foreign Key
-  PRIMARY KEY (scoreFlowId),  -- Use scoreFlowId as the primary key
-  FOREIGN KEY (matchId) REFERENCES fast5_mens_match(matchId)  -- Foreign key linking to match table
+  -- Precomputed Columns (calculated in the application layer)
+  uniquePlayerId VARCHAR(255) NOT NULL,
+  uniqueMatchId VARCHAR(255) NOT NULL,
+
+  -- Primary Key
+  PRIMARY KEY (scoreFlowId),
+
+  -- Foreign Key
+  FOREIGN KEY (uniqueMatchId) REFERENCES fast5_mens_match(uniqueMatchId),
+
+  -- Info Foreign Keys
+  FOREIGN KEY (uniquePlayerId) REFERENCES player_info(uniquePlayerId)
 );
